@@ -1,0 +1,171 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: Tahoma, Verdana;
+    font-size: 12pt;
+    color: black;
+}
+
+h1 {
+    font-size: 24pt;
+}
+
+h2 {
+    font-size: 18pt;
+    margin-bottom: 16px;
+}
+
+p {
+    margin-bottom: 16px;
+    margin-left: 16px;
+}
+
+.wrap {
+    &.pad-top-10 {
+        padding-top: 16px;
+    }
+}
+
+.container {
+    width: 100%;
+}
+
+.container-75 {
+    width: 75%;
+    margin: auto;
+}
+
+.container-60 {
+    width: 60%;
+    margin: auto;
+}
+
+.message {
+    color: white;
+    background-color: #FF6251;
+    padding: 16px;
+    border-radius: 3px;
+    text-shadow: 1px 1px 1px black;
+}
+
+.pull-center {
+    text-align: center;
+}
+
+.section {
+    margin-bottom: 16px;
+}
+
+.vk-login-button {
+    padding: 8px;
+    border-radius: 3px;
+    color: white;
+    text-decoration: none;
+    background-color: #307CFF;
+}
+
+.panel {
+    padding: 16px;
+}
+
+.loading {
+    padding: 16px;
+}
+
+.toolbar {
+    padding: 16px;
+
+    .right {
+        margin-left: 8px;
+    }
+}
+
+.grid:after {
+    clear: both;
+    display: table;
+    content: '';
+}
+
+.pull-center {
+    text-align: center;
+}
+
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+}
+
+.hint {
+    display: inline;
+    margin-right: 8px;
+    border-radius: 3px;
+    padding: 4px;
+    text-shadow: 1px 1px 1px black;
+
+    &:last-child {
+        margin-right: 0;
+    }
+
+    &.online {
+        color: white;
+        background-color: #00CD19;
+    }
+
+    &.offline {
+        color: white;
+        background-color: #C6C6C6;
+    }
+
+    &.mobile {
+        color: white;
+        background-color: #FFBF00;
+    }
+
+    &.no-data {
+        border: 1px solid black;
+        text-shadow: none;
+    }
+}
+
+.bar {
+    width: 100%;
+    height: 10px;
+
+    &:after {
+        content: '';
+        display: table;
+        clear: both;
+    }
+}
+
+.point {
+    float: left;
+    height: 10px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th, td {
+        padding: 4px;
+        border: 1px solid black;
+
+        input {
+            display: inline;
+        }
+    }
+
+    td {
+        white-space: nowrap;
+        width: 1px;
+
+        &:last-child {
+            width: 100%;
+        }
+    }
+}
