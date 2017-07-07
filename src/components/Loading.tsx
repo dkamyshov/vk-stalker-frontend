@@ -1,7 +1,5 @@
-const Loading = () => <div className="wrap">
-    <div className="loading pull-center">
-        Загрузка...
-    </div>
+const Loading = () => <div className="text-center">
+    <h4>Загрузка...</h4>
 </div>;
 
 export default Loading;

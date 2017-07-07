@@ -1,43 +1,30 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-import { browserHistory, Link } from 'react-router-dom';
+import * as ReactRouterDOM from 'react-router-dom';
+
+const { BrowserRouter, Route, Redirect, Switch, browserHistory, Link } = ReactRouterDOM,
+      Router = ReactRouterDOM.BrowserRouter;
 
 import Loading from 'components/Loading';
 import OnlineBar from 'components/OnlineBar';
 import SingleUser from 'components/SingleUser';
+import DashboardList from 'components/DashboardList';
 
 import Message from 'components/Message';
 import ErrorMessage from 'components/ErrorMessage';
-
-const onlineCount = user => {
-    return user.intervals.reduce(($, x) => $ + (x.status == 1 ? x.width*2 : x.status == 2 ? x.width : 0), 0);
-}
 
 class Dashboard extends React.Component<any, any> {
     constructor(props) {
         super(props);
 
         this.state = {
-            filter: "",
-            balance: 0,
-            users: null,
-            paused: false,
             error: false,
-            loading: true,
-            userId: null
+            balance: 0,
+            paused: false
         }
 
-        this.updateFilter = this.updateFilter.bind(this);
         this.pauseSwitch = this.pauseSwitch.bind(this);
-
-        this.updateDashboard = this.updateDashboard.bind(this);
-    }
-
-    updateFilter(nv) {
-        this.setState({
-            filter: nv.trim()
-        });
     }
 
     pauseSwitch() {
@@ -55,7 +42,6 @@ class Dashboard extends React.Component<any, any> {
         .then(response => response.json())
         .then(json => {
             if(json.status === true) {
-                if(!this.state.users) this.updateDashboard();
                 this.setState({ paused: json.paused });
             } else {
                 throw new Error(json.error);
@@ -66,15 +52,7 @@ class Dashboard extends React.Component<any, any> {
         });
     }
 
-    componentWillReceiveProps(props) {
-        this.setState({ userId: props.match.params.userId });
-    }
-
     componentDidMount() {
-        this.updateDashboard();
-    }
-
-    updateDashboard() {
         this.setState({ loading: true }, () =>
             fetch('/api/dashboard.get', {
                 method: 'POST',
@@ -88,8 +66,7 @@ class Dashboard extends React.Component<any, any> {
                 if(json.status === true) {
                     this.setState({
                         balance: json.balance,
-                        paused: json.paused,
-                        users: json.users
+                        paused: json.paused
                     });
                 } else {
                     throw new Error(json.error);
@@ -114,94 +91,69 @@ class Dashboard extends React.Component<any, any> {
             <Loading />
         ) : (
             <div>
-                <div className='toolbar grid'>
-                    <div className='left'>
-                        Баланс: {balance}. { !error ? <a href='/pay'>Пополнить</a> : '' }
+                <nav className="navbar navbar-default navbar-fixed-top">
+                    <div className="container-fluid">
+                        <div className="navbar-header">
+                            <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                                <span className="sr-only">Скрыть/раскрыть</span>
+                                <span className="icon-bar"></span>
+                                <span className="icon-bar"></span>
+                                <span className="icon-bar"></span>
+                            </button>
+                            <Link className="navbar-brand" to="/dashboard">VKStalker</Link>
+                        </div>
+                        <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                            <ul className="nav navbar-nav">
+                                <li><p className="navbar-text">Баланс: {balance}</p></li>
+                                <li><Link to="/pay">Пополнить</Link></li>
+                            </ul>
+                            <ul className="nav navbar-nav navbar-right">
+                                <li className="dropdown">
+                                <a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Действия <span className="caret"></span></a>
+                                <ul className="dropdown-menu">
+                                    <li><Link to="/statistics">Статистика</Link></li>
+                                    <li>
+                                        <a href="#" onClick={() => {this.pauseSwitch(); return false;}}>
+                                            {paused ? 'Возобновить сбор данных' : 'Остановить сбор данных'}
+                                        </a>
+                                    </li>
+                                </ul>
+                                </li>
+                                <li><Link to="/logout">Выйти</Link></li>
+                            </ul>
+                        </div>
                     </div>
+                </nav>
 
-                    <div className='right'>
-                        <a href='/logout'>Выйти</a>
-                    </div>
-
+                <div className="dashboard-content">
                     {
-                        !error && balance > 0 ? (
-                            <div className='right'>
-                                <a href='#' onClick={this.pauseSwitch}>{paused ? 'Возобновить сбор данных' : 'Остановить сбор данных'}</a>
+                        error ? (
+                            <div className="bs-callout bs-callout-danger bs-callout-centered">
+                                <h4>Ошибка</h4>
+                                <p>{error}</p>
                             </div>
-                        ) : (
-                            ''
-                        )
-                    }
-                </div>
-
-                {
-                    error ? (
-                        <ErrorMessage message={`Ошибка! (${error})`} />
-                    ) : (
-                        userId ? (
-                            <SingleUser resetId={() => {
-                                this.props.history.push('/dashboard');
-                                this.setState({userId: undefined});
-                            }} userId={userId} />
                         ) : (
                             balance > 0 ? (
                                 !paused ? (
-                                    <table>
-                                        <thead>
-                                            <tr>
-                                                <th>Имя</th>
-                                                <th>Счет</th>
-                                                <th>Данные (3 часа.)</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    <input value={filter} onChange={(e) => this.updateFilter(e.target.value)}/>
-                                                </td>
-                                                <td className='pull-center'>
-                                                    <input type='button' value=' X ' onClick={(e) => this.updateFilter('')} />
-                                                </td>
-                                                <td className='pull-center'>
-                                                    <div className='hint online'>
-                                                        Онлайн с ПК
-                                                    </div>
-
-                                                    <div className='hint mobile'>
-                                                        Онлайн с телефона
-                                                    </div>
-
-                                                    <div className='hint offline'>
-                                                        Оффлайн
-                                                    </div>
-
-                                                    <div className='hint no-data'>
-                                                        Нет данных
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            {
-                                                users.filter(user => user.name.toLowerCase().includes(filter.toLowerCase())).sort((a, b) => onlineCount(a) >= onlineCount(b) ? -1 : 1).map(user => (
-                                                    <tr>
-                                                        <td><Link to={`/dashboard/${user.id}`}>{user.name}</Link></td>
-                                                        <td>{Math.floor(onlineCount(user)*100)}</td>
-                                                        <td>
-                                                            <OnlineBar intervals={user.intervals} />
-                                                        </td>
-                                                    </tr>
-                                                ))
-                                            }
-                                        </tbody>
-                                    </table>
+                                    <Switch>
+                                        <Route exact path="/dashboard"      component={DashboardList} />
+                                        <Route path="/dashboard/:user_id?"  component={SingleUser} />
+                                    </Switch>
                                 ) : (
-                                    <Message message="Сбор данных оставновлен." />
+                                    <div className="bs-callout bs-callout-info bs-callout-centered">
+                                        <h4>Сбор данных остановлен</h4>
+                                        <p>Возобновите сбор данных</p>
+                                    </div>
                                 )
                             ) : (
-                                <ErrorMessage message="Пополните баланс!"/>
+                                <div className="bs-callout bs-callout-info bs-callout-centered">
+                                    <h4>Недостаточно средств</h4>
+                                    <p><Link to='/pay'>Пополните</Link> баланс</p>
+                                </div>
                             )
                         )
-                    )
-                }
+                    }
+                </div>
             </div>
         );
     }

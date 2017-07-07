@@ -9,6 +9,7 @@ import Loading from 'components/Loading';
 import Home from 'components/Home';
 import Verify from 'components/Verify';
 import Dashboard from 'components/Dashboard';
+import Pay from 'components/Pay';
 
 const Application = () => (
     <Router history={browserHistory}>
@@ -17,6 +18,7 @@ const Application = () => (
             <Route path='/dashboard/:userId?'   component={Dashboard} />
             <Route path='/verify'               component={Verify} />
             <Route path='/statistics'           component={Statistics} />
+            <Route path='/pay'                  component={Pay} />
 
             <Route path='/logout' render={(e) => {
                 localStorage.clear();

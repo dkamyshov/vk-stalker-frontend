@@ -2,7 +2,7 @@
   "name": "vk-stalker-frontend",
   "version": "0.0.1",
   "description": "Frontend for 'vk-watcher'",
-  "main": "src/index.js",
+  "main": "src/index.tsx",
   "scripts": {
     "build": "webpack --config config/webpack.config.js"
   },

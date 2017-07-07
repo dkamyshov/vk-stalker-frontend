@@ -6,7 +6,7 @@ class Statistics extends React.Component<any, any> {
         super(props);
 
         this.state = {
-            recordsCount: '---',
+            recordsCount: 0,
             usersCount: '---',
             accounts: [],
             log: []
@@ -18,7 +18,7 @@ class Statistics extends React.Component<any, any> {
             method: 'POST',
             headers: {
                 'Accept': 'application/json, text/plain, */*',
-                'Content-Type': 'application/json'
+                'Authorization': `Bearer ${localStorage['token']}`
             }
         })
         .then(response => response.json())
@@ -31,63 +31,45 @@ class Statistics extends React.Component<any, any> {
         const {recordsCount, usersCount, accounts, log} = this.state;
 
         return <div className='wrap'>
-            <div className='section'>
+            <p>
+                <a href='/dashboard'>Назад</a>
+            </p>
+
+            <p>
                 Отслеживается пользователей: {usersCount}
-            </div>
+            </p>
 
-            <div className='section'>
+            <p>
                 Записей о состоянии: {(recordsCount/1000000).toFixed(2)} млн.
-            </div>
+            </p>
 
-            <div className='section'>
+            <p>
                 Аккаунты: 
-                <table>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Отслеживается пользователей</th>
-                            <th>Баланс</th>
-                            <th>В работе</th>
-                        </tr>
-                    </thead>
+            </p>
 
-                    <tbody>
-                        {
-                            accounts.sort((a, b) => b.users.length - a.users.length).map(account => (
-                                <tr>
-                                    <td>{account.id}</td>
-                                    <td>{account.users.length}</td>
-                                    <td>{account.settings.balance}</td>
-                                    <td>{account.settings.pause ? 'нет' : 'да'}</td>
-                                </tr>
-                            ))
-                        }
-                    </tbody>
-                </table>
-            </div>
+            <table className='table'>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Отслеживается пользователей</th>
+                        <th>Баланс</th>
+                        <th>В работе</th>
+                    </tr>
+                </thead>
 
-            <div className='section'>
-                Журнал: 
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Время</th>
-                            <th>Пояснение</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        {
-                            log.map(entry => (
-                                <tr>
-                                    <td>{(new Date(entry.time)).toString()}</td>
-                                    <td>{entry.payload}</td>
-                                </tr>
-                            ))
-                        }
-                    </tbody>
-                </table>
-            </div>
+                <tbody>
+                    {
+                        accounts.sort((a, b) => b.users.length - a.users.length).map(account => (
+                            <tr>
+                                <td>{account.id}</td>
+                                <td>{account.users.length}</td>
+                                <td>{account.settings.balance}</td>
+                                <td>{account.settings.pause ? 'нет' : 'да'}</td>
+                            </tr>
+                        ))
+                    }
+                </tbody>
+            </table>
         </div>;
     }
 }

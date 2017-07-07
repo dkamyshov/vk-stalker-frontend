@@ -1,17 +1,16 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-/*class OnlineBar extends React.Component<any, any> {
-    con
-}*/
+import combineClassNames from 'helpers/combineClassNames';
 
-const colorByStatus = status => {
-    if(status == 0) return '#C6C6C6';
-    if(status == 1) return '#00CD19';
-    if(status == 2) return '#FFBF00';
-    if(status == 3) return '#FFF';
-
-    return '#FFF';
+const classByStatus = status => {
+    switch(status) {
+        case 0: return 'offline';
+        case 1: return 'online';
+        case 2: return 'mobile';
+        case 3: return 'no-data';
+        default: return 'no-data';
+    }
 }
 
 const fmtTime = date => {
@@ -23,7 +22,7 @@ const fmtTime = date => {
     const min = date.getMinutes();
     const s = date.getSeconds();
 
-    return /*`${d}.${m}.${y} */`${h < 10 ? '0'+h : h}:${min < 10 ? '0' + min : min}`;
+    return `${h < 10 ? '0'+h : h}:${min < 10 ? '0' + min : min}`;
 }
 
 const fmtLabel = (s, e) => {
@@ -42,12 +41,12 @@ const fmtLabel = (s, e) => {
 }
 
 const OnlineBar = ({intervals}) => {
-    return <div className="bar">
+    return <div className="online-bar">
         {
             intervals.map(interval => (
-                <div className="point"
+                <div className={combineClassNames("interval", classByStatus(interval.status))}
                      title={fmtLabel(interval.start, interval.end)}
-                     style={{width: (interval.width*100*0.999)+'%', backgroundColor: colorByStatus(interval.status)}}/>
+                     style={{width: (interval.width*100*0.999)+'%'}}/>
             ))
         }
     </div>;
