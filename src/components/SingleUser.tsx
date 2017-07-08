@@ -90,7 +90,7 @@ class SingleUser extends React.Component<any, any> {
                             <table className='table dashboard-table'>
                                 <thead>
                                     <tr>
-                                        <th>День</th>
+                                        <th>Дата</th>
                                         <th>
                                             Данные (00:00 - 24:00)
                                         </th>

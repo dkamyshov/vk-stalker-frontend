@@ -67,46 +67,48 @@ class DashboardList extends React.Component<any, any> {
             <Loading />
         ) : (
             !error ? (
-                <table className="table dashboard-table">
-                    <thead>
-                        <tr>
-                            <th>Имя</th>
-                            <th>Данные (3 часа)</th>
-                        </tr>
-                    </thead>
+                <div className="container">
+                    <table className="table dashboard-table">
+                        <thead>
+                            <tr>
+                                <th>Пользователи</th>
+                                <th className='hidden-xs'>Данные (3 часа)</th>
+                            </tr>
+                        </thead>
 
-                    <tbody>
-                        <tr>
-                            <td>
-                                <div className="btn-group group-filter">
-                                    <input value={filter} onChange={(e) => this.updateFilter(e.target.value)} />
-                                    <span className="glyphicon glyphicon-remove-circle" onClick={(e) => this.updateFilter("")}></span>
-                                </div>
-                            </td>
-                            <td>
-                                <div className="text-center">
-                                    <div className="status-chip offline">Не в сети</div>
-                                    <div className="status-chip online">В сети с ПК</div>
-                                    <div className="status-chip mobile">В сети с моб.</div>
-                                    <div className="status-chip no-data">Нет данных</div>
-                                </div>
-                            </td>
-                        </tr>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div className="btn-group group-filter">
+                                        <input value={filter} onChange={(e) => this.updateFilter(e.target.value)} />
+                                        <span className="glyphicon glyphicon-remove-circle" onClick={(e) => this.updateFilter("")}></span>
+                                    </div>
+                                </td>
+                                <td className='hidden-xs'>
+                                    <div className="text-center">
+                                        <div className="status-chip offline">Не в сети</div>
+                                        <div className="status-chip online">В сети с ПК</div>
+                                        <div className="status-chip mobile">В сети с моб.</div>
+                                        <div className="status-chip no-data">Нет данных</div>
+                                    </div>
+                                </td>
+                            </tr>
 
-                        {
-                            users.filter(user => user.name.toLowerCase().indexOf(filter.toLowerCase()) != -1).map(user => (
-                                <tr>
-                                    <td>
-                                        <Link to={`/dashboard/${user.id}`}>{user.name}</Link>
-                                    </td>
-                                    <td>
-                                        <OnlineBar intervals={user.intervals} />
-                                    </td>
-                                </tr>
-                            ))
-                        }
-                    </tbody>
-                </table>
+                            {
+                                users.filter(user => user.name.toLowerCase().indexOf(filter.toLowerCase()) != -1).map(user => (
+                                    <tr>
+                                        <td>
+                                            <Link to={`/dashboard/${user.id}`}>{user.name}</Link>
+                                        </td>
+                                        <td className='hidden-xs'>
+                                            <OnlineBar intervals={user.intervals} />
+                                        </td>
+                                    </tr>
+                                ))
+                            }
+                        </tbody>
+                    </table>
+                </div>
             ) : (
                 <div className="bs-callout bs-callout-danger bs-callout-centered">
                     <h4>Ошибка</h4>

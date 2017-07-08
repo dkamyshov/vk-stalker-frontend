@@ -91,7 +91,7 @@ class Home extends React.Component<any, any> {
 
                 <div className="text-center mt-1">
                     <p><a href='https://vk.com/alhayat'>Danil Kamyshov</a>, 2017</p>
-                    <a href='https://github.com'>GitHub</a>
+                    <a href='https://github.com/dkamyshov/vk-stalker-frontend'>GitHub</a>
                 </div>
             </div>;
         }
