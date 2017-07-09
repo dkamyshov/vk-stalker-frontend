@@ -93,10 +93,15 @@ class DashboardList extends React.Component<any, any> {
                                 </td>
                                 <td className='hidden-xs'>
                                     <div className="text-center">
-                                        <div className="status-chip offline">Не в сети</div>
-                                        <div className="status-chip online">В сети с ПК</div>
-                                        <div className="status-chip mobile">В сети с моб.</div>
-                                        <div className="status-chip no-data">Нет данных</div>
+                                        <div className="status-chip no">Нет данных</div>
+                                        <div className="status-chip p0">Офф.</div>
+                                        <div className="status-chip p1">m.vk.com</div>
+                                        <div className="status-chip p2">iPhone</div>
+                                        <div className="status-chip p3">iPad</div>
+                                        <div className="status-chip p4">Android</div>
+                                        <div className="status-chip p5">WP</div>
+                                        <div className="status-chip p6">Win10</div>
+                                        <div className="status-chip p7">vk.com</div>
                                     </div>
                                 </td>
                             </tr>

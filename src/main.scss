@@ -71,10 +71,15 @@
 }
 
 .status-chip, .interval {
-    &.no-data { background-color: #FFF; }
-    &.online { background-color: #00CD19; }
-    &.mobile { background-color: #FFBF00; }
-    &.offline {background-color: #C6C6C6; }
+    &.no { background-color: #FFF; }
+    &.p0 { background-color: #C6C6C6; }
+    &.p1 { background-color: #FFBF00; }
+    &.p2 { background-color: #FF6A00; }
+    &.p3 { background-color: #FF0083; }
+    &.p4 { background-color: #9400FF; }
+    &.p5 { background-color: #0065FF; }
+    &.p6 { background-color: #00CD19; }
+    &.p7 { background-color: #00FF11; }
 }
 
 .online-bar {
@@ -98,7 +103,7 @@
     text-shadow: 1px 1px 2px gray;
     margin: 2px;
 
-    &.no-data {
+    &.no {
         color: black;
     }
 }

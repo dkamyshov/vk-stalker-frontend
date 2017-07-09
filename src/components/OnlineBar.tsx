@@ -5,11 +5,16 @@ import combineClassNames from 'helpers/combineClassNames';
 
 const classByStatus = status => {
     switch(status) {
-        case 0: return 'offline';
-        case 1: return 'online';
-        case 2: return 'mobile';
-        case 3: return 'no-data';
-        default: return 'no-data';
+        case 0:
+        case 1:
+        case 2:
+        case 3:
+        case 4:
+        case 5:
+        case 6:
+        case 7:
+            return `p${status}`;
+        default: return 'no';
     }
 }
 
