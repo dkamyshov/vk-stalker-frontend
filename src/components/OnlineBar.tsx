@@ -26,8 +26,8 @@ const fmtTime = date => {
 }
 
 const fmtLabel = (s, e) => {
-    const mins = Math.floor((e-s)%(60*60000)/60000);
-    const hrs = Math.floor((e-s)/(60*60000));
+    const mins = Math.floor(((new Date(e)).getTime()-(new Date(s)).getTime())%(60*60000)/60000);
+    const hrs = Math.floor(((new Date(e)).getTime()-(new Date(s)).getTime())/(60*60000));
 
     let msg;
 
