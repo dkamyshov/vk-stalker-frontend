@@ -1,6 +1,14 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
+const dateOptions = {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    second: 'numeric'
+};
 class Statistics extends React.Component<any, any> {
     constructor(props) {
         super(props);
@@ -65,6 +73,30 @@ class Statistics extends React.Component<any, any> {
                                 <td>{account.users.length.toLocaleString('ru')}</td>
                                 <td>{account.settings.balance.toLocaleString('ru')}</td>
                                 <td>{account.settings.pause ? 'нет' : 'да'}</td>
+                            </tr>
+                        ))
+                    }
+                </tbody>
+            </table>
+
+            <table className='table'>
+                <thead>
+                    <tr>
+                        <th>Время</th>
+                        <th>IP</th>
+                        <th>Путь</th>
+                        <th>Пользователь</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {
+                        log.map(({time, ip, path, user_id}) => (
+                            <tr>
+                                <td>{(new Date(time)).toLocaleString("ru", dateOptions)}</td>
+                                <td>{ip}</td>
+                                <td>{path}</td>
+                                <td><a target='_blank' href={`https://vk.com/id${user_id}`}>/id{user_id}</a></td>
                             </tr>
                         ))
                     }
