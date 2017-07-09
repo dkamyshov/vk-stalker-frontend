@@ -35,9 +35,19 @@ class SingleUserDaily extends React.Component<any, any> {
             error: false,
             rows: []
         };
+
+        this.viewTable = this.viewTable.bind(this);
     }
 
     componentDidMount() {
+        this.viewTable();
+    }
+
+    componentWillReceiveProps(props) {
+        this.viewTable();
+    }
+
+    viewTable() {
         this.setState({ loading: true }, () => fetch('/api/user.hourly.get', {
             method: 'POST',
             headers: {
@@ -54,7 +64,7 @@ class SingleUserDaily extends React.Component<any, any> {
         .then(json => {
             if(json.status === true) {
                 this.setState({
-                    rows: json.rows
+                    rows: json.info.intervals
                 });
             } else {
                 throw new Error(json.error);
@@ -72,9 +82,15 @@ class SingleUserDaily extends React.Component<any, any> {
 
     render() {
         const {loading, error, rows} = this.state;
+        const {offset, userId} = this.props.match.params;
+        const day = 24*3600*1000;
 
         return <div>
-            <p><Link to={`/dashboard/${this.props.match.params.userId}`}>по дням</Link></p>
+            <div className='date-nav' id='date-select'>
+                <Link to={`/dashboard/${userId}`}>К списку дней</Link>
+                <Link to={`/dashboard/${userId}/${parseInt(offset)-day}/#date-select`}>← {fmtDate(new Date(parseInt(offset)-day))}</Link>
+                <Link to={`/dashboard/${userId}/${parseInt(offset)+day}/#date-select`}>{fmtDate(new Date(parseInt(offset)+day))} →</Link>
+            </div>
             
             {
                 loading ? (
@@ -84,7 +100,7 @@ class SingleUserDaily extends React.Component<any, any> {
                         <table className='table dashboard-table'>
                             <thead>
                                 <tr>
-                                    <th>{fmtDate(new Date(parseInt(this.props.match.params.offset)))}</th>
+                                    <th>{fmtDate(new Date(parseInt(offset)))}</th>
                                     <th>
                                         Данные (1 час)
                                     </th>

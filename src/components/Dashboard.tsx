@@ -106,6 +106,11 @@ class Dashboard extends React.Component<any, any> {
                             <ul className="nav navbar-nav">
                                 <li><p className="navbar-text">Баланс: {balance.toLocaleString('ru')}</p></li>
                                 <li><Link to="/pay">Пополнить</Link></li>
+                                <li>
+                                    <Route exact path='/dashboard/:userId/:offset?'>
+                                        <Link className='hidden-xs' to='/dashboard'>К полному списку</Link>
+                                    </Route>
+                                </li>
                             </ul>
                             <ul className="nav navbar-nav navbar-right">
                                 <li className="dropdown">

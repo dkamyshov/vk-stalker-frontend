@@ -76,7 +76,7 @@ class SingleUser extends React.Component<any, any> {
                 ) : (
                     !error ? (
                         <div className="container">
-                            <Link to='/dashboard'>← к полному списку</Link>
+                            <Link className='hidden-sm hidden-lg hidden-xl' to='/dashboard'>К полному списку</Link>
 
                             <h2><a href={`https://vk.com/id${info.id}`} target='_blank'>{info.name}</a></h2> 
 
@@ -122,7 +122,7 @@ class SingleUser extends React.Component<any, any> {
                     ) : (
                         <div className="bs-callout bs-callout-danger bs-callout-centered">
                             <h4>Ошибка</h4>
-                            <p>{error}</p>
+                            <p>{error}. <Link to='/dashboard'>К списку.</Link></p>
                         </div>
                     )
                 )

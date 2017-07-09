@@ -23,6 +23,7 @@ class DashboardList extends React.Component<any, any> {
         };
 
         this.updateFilter = this.updateFilter.bind(this);
+        this.fetchUsers = this.fetchUsers.bind(this);
     }
 
     updateFilter(value) {
@@ -31,8 +32,8 @@ class DashboardList extends React.Component<any, any> {
         });
     }
 
-    componentDidMount() {
-        this.setState({ loading: true }, () =>
+    fetchUsers(reload) {
+        this.setState({ loading: reload }, () =>
             fetch('/api/users.get', {
                 method: 'POST',
                 headers: {
@@ -58,6 +59,12 @@ class DashboardList extends React.Component<any, any> {
             .then(() => {
                 this.setState({ loading: false });
             }));
+    }
+
+    componentDidMount() {
+        setInterval(() => this.fetchUsers(false), 60000);
+
+        this.fetchUsers(true);
     }
 
     render() {
