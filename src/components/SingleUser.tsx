@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import Loading from 'components/Loading';
 import ErrorMessage from 'components/ErrorMessage';
-
+import SingleUserDaily from 'components/SingleuserDaily';
 import OnlineBar from 'components/OnlineBar';
 
 import * as ReactRouterDOM from 'react-router-dom';
@@ -76,7 +76,7 @@ class SingleUser extends React.Component<any, any> {
                 ) : (
                     !error ? (
                         <div className="container">
-                            <Link to='/dashboard'>← Назад</Link>
+                            <Link to='/dashboard'>← к полному списку</Link>
 
                             <h2><a href={`https://vk.com/id${info.id}`} target='_blank'>{info.name}</a></h2> 
 
@@ -87,31 +87,37 @@ class SingleUser extends React.Component<any, any> {
                                 <div className="status-chip no-data">Нет данных</div>
                             </div>
 
-                            <table className='table dashboard-table'>
-                                <thead>
-                                    <tr>
-                                        <th>Дата</th>
-                                        <th>
-                                            Данные (00:00 - 24:00)
-                                        </th>
-                                    </tr>
-                                </thead>
-
-                                <tbody>
-                                    {
-                                        info.intervals.map(interval => (
+                            <Switch>
+                                <Route exact path='/dashboard/:userId'>
+                                    <table className='table dashboard-table'>
+                                        <thead>
                                             <tr>
-                                                <td>
-                                                    {fmtDate(new Date(interval.offset))}
-                                                </td>
-                                                <td>
-                                                    <OnlineBar intervals={interval.intervals} />
-                                                </td>
+                                                <th>Дата</th>
+                                                <th>
+                                                    Данные (00:00 - 24:00)
+                                                </th>
                                             </tr>
-                                        ))
-                                    }
-                                </tbody>
-                            </table>
+                                        </thead>
+
+                                        <tbody>
+                                            {
+                                                info.intervals.map(interval => (
+                                                    <tr>
+                                                        <td>
+                                                            <Link to={`/dashboard/${info.id}/${(new Date(interval.offset)).getTime()}`}>{fmtDate(new Date(interval.offset))}</Link>
+                                                        </td>
+                                                        <td>
+                                                            <OnlineBar intervals={interval.intervals} />
+                                                        </td>
+                                                    </tr>
+                                                ))
+                                            }
+                                        </tbody>
+                                    </table>
+                                </Route>
+
+                                <Route path='/dashboard/:userId/:offset' render={e => <SingleUserDaily history={e.history} match={e.match} />}/>
+                            </Switch>
                         </div>
                     ) : (
                         <div className="bs-callout bs-callout-danger bs-callout-centered">

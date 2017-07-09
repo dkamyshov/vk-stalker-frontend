@@ -30,17 +30,17 @@ class Statistics extends React.Component<any, any> {
     render() {
         const {recordsCount, usersCount, accounts, log} = this.state;
 
-        return <div className='wrap'>
+        return <div className='container'>
             <p>
                 <a href='/dashboard'>Назад</a>
             </p>
 
             <p>
-                Отслеживается пользователей: {usersCount}
+                Отслеживается пользователей: {usersCount.toLocaleString('ru')}
             </p>
 
             <p>
-                Записей о состоянии: {(recordsCount/1000000).toFixed(2)} млн.
+                Записей о состоянии: {recordsCount.toLocaleString('ru')}.
             </p>
 
             <p>
@@ -62,8 +62,8 @@ class Statistics extends React.Component<any, any> {
                         accounts.sort((a, b) => b.users.length - a.users.length).map(account => (
                             <tr>
                                 <td>{account.id}</td>
-                                <td>{account.users.length}</td>
-                                <td>{account.settings.balance}</td>
+                                <td>{account.users.length.toLocaleString('ru')}</td>
+                                <td>{account.settings.balance.toLocaleString('ru')}</td>
                                 <td>{account.settings.pause ? 'нет' : 'да'}</td>
                             </tr>
                         ))

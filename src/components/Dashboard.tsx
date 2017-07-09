@@ -104,7 +104,7 @@ class Dashboard extends React.Component<any, any> {
                         </div>
                         <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                             <ul className="nav navbar-nav">
-                                <li><p className="navbar-text">Баланс: {balance}</p></li>
+                                <li><p className="navbar-text">Баланс: {balance.toLocaleString('ru')}</p></li>
                                 <li><Link to="/pay">Пополнить</Link></li>
                             </ul>
                             <ul className="nav navbar-nav navbar-right">
