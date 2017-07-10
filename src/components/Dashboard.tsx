@@ -36,7 +36,7 @@ class Dashboard extends React.Component<any, any> {
                 'Authorization': `Bearer ${localStorage['token']}`
             },
             body: JSON.stringify({
-                pause: !this.state.paused
+                paused: !this.state.paused
             })
         })
         .then(response => response.json())
