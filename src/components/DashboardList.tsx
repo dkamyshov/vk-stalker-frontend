@@ -9,7 +9,13 @@ const { BrowserRouter, Route, Redirect, Switch, browserHistory, Link } = ReactRo
 import Loading from 'components/Loading';
 import OnlineBar from 'components/OnlineBar';
 
-const onlineScore = user => user.intervals.reduce(($, x) => $ + (x.status == 1 ? x.width*2 : x.status == 2 ? x.width : 0), 0);
+const scoreWeights = [0, 1, 1, 2, 1, 1, 3, 3];
+
+const onlineScore = user => {
+    return user.intervals.reduce(($, x) => {
+        return $ + ((x.status <= 7) ? scoreWeights[x.status] * x.width : 0);
+    }, 0);
+}
 
 class DashboardList extends React.Component<any, any> {
     constructor(props) {
@@ -74,6 +80,7 @@ class DashboardList extends React.Component<any, any> {
             <Loading />
         ) : (
             !error ? (
+                
                 <div className="container">
                     <table className="table dashboard-table">
                         <thead>
