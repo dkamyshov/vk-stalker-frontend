@@ -17,6 +17,9 @@ const onlineScore = user => {
     }, 0);
 }
 
+const scoreSort = (ascending) => (a, b) => ascending ? a.score - b.score : b.score - a.score;
+const nameSort = (ascending) => (a, b) => ascending ? a.name > b.name : b.name > a.name;
+
 class DashboardList extends React.Component<any, any> {
     constructor(props) {
         super(props);
@@ -25,11 +28,23 @@ class DashboardList extends React.Component<any, any> {
             error: false,
             loading: false,
             filter: "",
-            users: []
+            users: [],
+            sorter: scoreSort,
+            ascending: false
         };
 
         this.updateFilter = this.updateFilter.bind(this);
         this.fetchUsers = this.fetchUsers.bind(this);
+        this.useSort = this.useSort.bind(this);
+    }
+
+    useSort(newSorter) {
+        const {sorter, ascending} = this.state;
+
+        this.setState({
+            sorter: newSorter,
+            ascending: sorter == newSorter ? !ascending : ascending
+        });
     }
 
     updateFilter(value) {
@@ -51,7 +66,9 @@ class DashboardList extends React.Component<any, any> {
             .then(json => {
                 if(json.status === true) {
                     this.setState({
-                        users: json.users.sort((a, b) => onlineScore(b) - onlineScore(a))
+                        users: json.users.map(user => Object.assign(user, {
+                            score: onlineScore(user)
+                        }))
                     });
                 } else {
                     throw new Error(json.error);
@@ -74,7 +91,9 @@ class DashboardList extends React.Component<any, any> {
     }
 
     render() {
-        const {error, loading, filter, users} = this.state;
+        const {error, loading, filter, users, sorter, ascending} = this.state;
+
+        const sortWay = ascending ? '▲' : '▼';
 
         return loading ? (
             <Loading />
@@ -85,8 +104,12 @@ class DashboardList extends React.Component<any, any> {
                     <table className="table dashboard-table">
                         <thead>
                             <tr>
-                                <th>Пользователи</th>
-                                <th className='hidden-xs'>Данные (3 часа)</th>
+                                <th>
+                                    <a className='no-href-a' onClick={(e) => {this.useSort(nameSort); e.preventDefault();}}>Пользователи {sorter == nameSort ? sortWay : ''}</a>
+                                </th>
+                                <th className='hidden-xs'>
+                                    <a className='no-href-a' onClick={(e) => {this.useSort(scoreSort); e.preventDefault();}}>Данные (3 часа) {sorter == scoreSort ? sortWay : ''}</a>
+                                </th>
                             </tr>
                         </thead>
 
@@ -114,7 +137,7 @@ class DashboardList extends React.Component<any, any> {
                             </tr>
 
                             {
-                                users.filter(user => user.name.toLowerCase().indexOf(filter.toLowerCase()) != -1).map(user => (
+                                users.filter(user => user.name.toLowerCase().indexOf(filter.toLowerCase()) != -1).sort(sorter(ascending)).map(user => (
                                     <tr>
                                         <td>
                                             <Link to={`/dashboard/${user.id}`}>{user.name}</Link>
