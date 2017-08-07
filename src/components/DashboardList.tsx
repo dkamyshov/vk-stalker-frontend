@@ -3,6 +3,8 @@ import * as ReactDOM from 'react-dom';
 
 import * as ReactRouterDOM from 'react-router-dom';
 
+import AddUser from 'components/AddUser';
+
 const { BrowserRouter, Route, Redirect, Switch, browserHistory, Link } = ReactRouterDOM,
       Router = ReactRouterDOM.BrowserRouter;
 
@@ -148,6 +150,8 @@ class DashboardList extends React.Component<any, any> {
                                     </tr>
                                 ))
                             }
+
+                            <AddUser fetchUsers={this.fetchUsers.bind(this, false)} />
                         </tbody>
                     </table>
                 </div>

@@ -57,7 +57,8 @@ class SingleUserDaily extends React.Component<any, any> {
             },
             body: JSON.stringify({
                 userId: parseInt(this.props.match.params.userId),
-                offset: parseInt(this.props.match.params.offset)
+                offset: parseInt(this.props.match.params.offset),
+                timezone: (new Date()).getTimezoneOffset()
             })
         })
         .then(response => response.json())

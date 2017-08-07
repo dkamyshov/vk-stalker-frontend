@@ -50,6 +50,7 @@ class Statistics extends React.Component<any, any> {
 
         this.state = {
             topRecords: [],
+            topPlatforms: [],
             recordsCount: 0,
             usersCount: '---',
             accounts: [],
@@ -72,7 +73,7 @@ class Statistics extends React.Component<any, any> {
     }
 
     render() {
-        const {recordsCount, usersCount, accounts, log, topRecords} = this.state;
+        const {recordsCount, usersCount, accounts, log, topRecords, topPlatforms} = this.state;
 
         return <div className='container'>
             <p>
@@ -125,6 +126,14 @@ class Statistics extends React.Component<any, any> {
                 <div className="status-chip p5">WP</div>
                 <div className="status-chip p6">Win10</div>
                 <div className="status-chip p7">vk.com</div>
+            </div>
+
+            <div className="text-center">
+                {
+                    topPlatforms.sort((a, b) => b.count - a.count).map(({_id, count}) => (
+                        _id > 0 ? <div className={`status-chip ${classByStatus(_id)}`}>{count}</div> : ''
+                    ))
+                }
             </div>
 
             <table className='table'>
