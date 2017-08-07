@@ -28,7 +28,7 @@ gulp.task('webpack', function(callback) {
     );
 });
 
-const serverStaticDir = "C:\\CODING\\vk-watcher\\backend\\static";
+const serverStaticDir = "C:\\coding\\js\\vk-watcher\\backend\\static";
 
 gulp.task('deploy', function() {
     gulp.src('./dist/*').pipe(gulp.dest(serverStaticDir));

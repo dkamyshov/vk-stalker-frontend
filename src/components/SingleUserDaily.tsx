@@ -57,7 +57,8 @@ class SingleUserDaily extends React.Component<any, any> {
             },
             body: JSON.stringify({
                 userId: parseInt(this.props.match.params.userId),
-                offset: parseInt(this.props.match.params.offset)
+                offset: parseInt(this.props.match.params.offset),
+                timezone: (new Date()).getTimezoneOffset()
             })
         })
         .then(response => response.json())
@@ -89,6 +90,7 @@ class SingleUserDaily extends React.Component<any, any> {
             <div className='date-nav' id='date-select'>
                 <Link to={`/dashboard/${userId}`}>К списку дней</Link>
                 <Link to={`/dashboard/${userId}/${parseInt(offset)-day}/#date-select`}>← {fmtDate(new Date(parseInt(offset)-day))}</Link>
+                <b>{fmtDate(new Date(parseInt(offset)))}</b>
                 <Link to={`/dashboard/${userId}/${parseInt(offset)+day}/#date-select`}>{fmtDate(new Date(parseInt(offset)+day))} →</Link>
             </div>
             

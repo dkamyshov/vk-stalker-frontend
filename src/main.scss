@@ -118,3 +118,50 @@
     display: inline-block;
     padding: 6px;
 }
+
+a {
+    &.no-href-a {
+        cursor: pointer;
+    }
+}
+
+.users-select {
+    &:after {
+        display: table;
+        content: '';
+        clear: both;
+    }
+
+    .user-select {
+        width: 25%;
+        float: left;
+        text-align: center;
+        padding: 8px;
+        cursor: pointer;
+
+        &.active {
+            background-color: #D2FFC1;
+        }
+    }
+
+    @media (max-width: 1200px) {
+        .user-select {
+            width: 33.33%;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .user-select {
+            width: 100%;
+        }
+    }
+}
+
+.proceed {
+    margin-top: 16px;
+    margin-bottom: 16px;
+}
+
+input:disabled {
+    opacity: 0.5;
+}

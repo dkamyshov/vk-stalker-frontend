@@ -18,6 +18,34 @@ const fmtDate = date => {
     return `${d}.${m}.${y}`;
 }
 
+const classByStatus = status => {
+    switch(status) {
+        case 0:
+        case 1:
+        case 2:
+        case 3:
+        case 4:
+        case 5:
+        case 6:
+        case 7:
+            return `p${status}`;
+        default: return 'no';
+    }
+}
+
+const nameByStatus = status => {
+    switch(status) {
+        case 0: return 'Офф.';
+        case 1: return 'm.vk.com';
+        case 2: return 'iPhone';
+        case 3: return 'iPad';
+        case 4: return 'Android';
+        case 5: return 'WP';
+        case 6: return 'Win10';
+        case 7: return 'vk.com';
+        default: return 'Нет данных';
+    }
+}
 class SingleUser extends React.Component<any, any> {
     constructor(props) {
         super(props);
@@ -38,7 +66,8 @@ class SingleUser extends React.Component<any, any> {
                 'Authorization': `Bearer ${localStorage['token']}`
             },
             body: JSON.stringify({
-                userId: parseInt(this.props.match.params.user_id)
+                userId: parseInt(this.props.match.params.user_id),
+                timezone: (new Date()).getTimezoneOffset()
             })
         })
         .then(response => response.json())
@@ -81,15 +110,11 @@ class SingleUser extends React.Component<any, any> {
                             <h2><a href={`https://vk.com/id${info.id}`} target='_blank'>{info.name}</a></h2> 
 
                             <div>
-                                <div className="status-chip no">Нет данных</div>
-                                <div className="status-chip p0">Офф.</div>
-                                <div className="status-chip p1">m.vk.com</div>
-                                <div className="status-chip p2">iPhone</div>
-                                <div className="status-chip p3">iPad</div>
-                                <div className="status-chip p4">Android</div>
-                                <div className="status-chip p5">WP</div>
-                                <div className="status-chip p6">Win10</div>
-                                <div className="status-chip p7">vk.com</div>
+                                {
+                                    info.platforms.map(({_id, count}) => (
+                                        <div className={`status-chip ${classByStatus(_id)}`}>{nameByStatus(_id)} ({count})</div>
+                                    ))
+                                }
                             </div>
 
                             <Switch>
